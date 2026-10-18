@@ -1,10 +1,19 @@
-@rem Gradle startup script for Windows
-@if "%DEBUG%" == "" @echo off
-set DIRNAME=%~dp0
-if "%DIRNAME%" == "" set DIRNAME=.
-set GRADLE_WRAPPER_JAR=%DIRNAME%gradle\wrapper\gradle-wrapper.jar
-if not exist "%GRADLE_WRAPPER_JAR%" (
-    echo Downloading Gradle Wrapper...
-    powershell -Command "Invoke-WebRequest -Uri 'https://github.com/gradle/gradle/raw/v8.2.0/gradle/wrapper/gradle-wrapper.jar' -OutFile '%GRADLE_WRAPPER_JAR%'"
+@echo off
+setlocal
+
+set "APP_HOME=%~dp0"
+set "WRAPPER_JAR=%APP_HOME%gradle\wrapper\gradle-wrapper.jar"
+
+if defined JAVA_HOME (
+    set "JAVACMD=%JAVA_HOME%\bin\java.exe"
+) else (
+    set "JAVACMD=java.exe"
 )
-java -jar "%GRADLE_WRAPPER_JAR%" %*
+
+if not exist "%WRAPPER_JAR%" (
+    echo Error: Gradle wrapper JAR not found: "%WRAPPER_JAR%"
+    exit /b 1
+)
+
+"%JAVACMD%" -classpath "%WRAPPER_JAR%" org.gradle.wrapper.GradleWrapperMain %*
+exit /b %ERRORLEVEL%
